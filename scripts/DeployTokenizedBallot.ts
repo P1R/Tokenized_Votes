@@ -1,14 +1,10 @@
 import { ethers } from "hardhat";
 import {  Ballot__factory } from "../typechain-types";
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config()
 
-
-// Fill after everyone delegates
-const TARGET_BLOCK_NUMBER = "";
 // Fill after ERC20Votes Smart Contract Deploymenet
-const ERC20VOTES_ADDRESS = "";
-
+const ERC20VOTES_ADDRESS="0x18dF1C9a5c9A7A35c251818Eec22ccaf3905fe3D"
 
 // I Like Pokemons which one should I pick?
 const PROPOSALS = ["Bulbasaur", "Charmander", "Squirtle", "pikachu"];
@@ -25,14 +21,17 @@ function convertStringArrayToBytes32(array: string[]) {
 async function main() {
 
   // Deploy TokenizedBallot Contract
-
   const provider = new ethers.providers.InfuraProvider(
-      "goerli",
+      "maticmum",
       process.env.INFURA_API_KEY
   );
+  //const provider = new ethers.providers.InfuraProvider(
+  //    "goerli",
+  //    process.env.INFURA_API_KEY
+  //);
 
   console.log({ provider });
-  const pkey = process.env.PRIVATE_KEY;
+  const pkey = process.env.PRIVATE_KEY_ACCOUNT1;
   console.log({ pkey });
   const lastBlock = await provider.getBlock("latest");
   console.log({ lastBlock });
@@ -48,7 +47,7 @@ async function main() {
   const contractBallot = await ballotFactory.deploy(
     convertStringArrayToBytes32(PROPOSALS),
     ERC20VOTES_ADDRESS,
-    TARGET_BLOCK_NUMBER 
+    lastBlock.number
   );
   const deployedTransactionReciptBallot = await contractBallot.deployTransaction.wait();
   console.log(

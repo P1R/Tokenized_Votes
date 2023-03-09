@@ -18,7 +18,7 @@ async function main() {
   //);
 
   console.log({ provider });
-  const pkey = process.env.PRIVATE_KEY;
+  const pkey = process.env.PRIVATE_KEY_ACCOUNT1;
   console.log({ pkey });
   const lastBlock = await provider.getBlock("latest");
   console.log({ lastBlock });
@@ -42,9 +42,10 @@ async function main() {
 
   // TEAM 3 Addresses
   const addresses = [
+    "0x0BF3CdafFAfAD2498Df897C5bB52D4855ceBa18e", // Team3
     "0x934a406B7CAB0D8cB3aD201f0cdcA6a7855F43b0", // Davids
-    "0xD64258a33E7AC0294a9fdE8e4C9A76674bD33A23",
-    "0xDDd93CEC5843f471Eb2b8B2886b2Be32555B5209"
+    "0xD64258a33E7AC0294a9fdE8e4C9A76674bD33A23", // hackathon
+    "0xDDd93CEC5843f471Eb2b8B2886b2Be32555B5209", // Personal
   ]
 
   // GIVE VOTE TOKENS
@@ -70,6 +71,13 @@ async function main() {
   console.log(`Minted tokens to ${addresses[2]} at ${mint3Recipt.blockNumber}`);
   const balanceOfAccount3 = await contractERC20Votes.balanceOf(addresses[2]);
   console.log(`Now the balance of ${addresses[2]} is ${balanceOfAccount3}`);
+
+  //Mint some tokens to Account 4
+  const mintTx4 = await contractERC20Votes.mint(addresses[3], MINT_VALUE);
+  const mint4Recipt = await mintTx4.wait();
+  console.log(`Minted tokens to ${addresses[3]} at ${mint4Recipt.blockNumber}`);
+  const balanceOfAccount4 = await contractERC20Votes.balanceOf(addresses[3]);
+  console.log(`Now the balance of ${addresses[3]} is ${balanceOfAccount4}`);
 }
 
 main().catch((error) => {
